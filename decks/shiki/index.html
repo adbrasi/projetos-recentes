@@ -1,0 +1,278 @@
+<meta charset="utf-8">
+<title>SHIKI em ação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&text=%E5%BC%8F&display=swap">
+<link rel="stylesheet" href="vendor/reveal.css">
+<style>
+  /* One dark look, the SHIKI app's own: warm charcoal, and one colour per role. */
+  :root {
+    --bg: #151413; --bg-2: #1a1917; --card: #22211e; --card-2: #2a2723; --line: #34312c;
+    --ink: #ebe9e3; --muted: #aaa69c; --faint: #77736a;
+    --director: #93b2e4; --executor: #7cc49c; --memory: #baa3ea; --user: #e0b160; --bad: #ea8b78;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --text: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", Consolas, ui-monospace, monospace;
+    --kanji: "Noto Serif JP", "Yu Mincho", "MS Mincho", serif;
+    color-scheme: dark;
+  }
+  html, body { background: var(--bg); color: var(--ink); }
+  .reveal-viewport { background: radial-gradient(1400px 800px at 78% -10%, #24211d 0%, var(--bg) 62%); }
+  .reveal { font-family: var(--text); font-size: 22px; line-height: 1.42; color: var(--ink); }
+  .reveal .slides { text-align: left; }
+  .reveal .slides > section { height: 100%; padding: 40px 54px 34px; box-sizing: border-box; }
+  .reveal .controls { color: var(--executor); }
+  .reveal .progress { color: var(--executor); height: 4px; }
+  .reveal .slide-number { background: transparent; color: var(--faint); font-family: var(--mono); font-size: 13px; }
+
+  .page { height: 100%; display: flex; flex-direction: column; gap: 22px; }
+  .kicker { font-family: var(--mono); font-size: 14px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+  .kicker::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--dot, var(--executor)); }
+  .reveal h1, .reveal h2 { font-family: var(--display); color: var(--ink); margin: 0; text-wrap: balance; }
+  .reveal h2 { font-size: 46px; font-weight: 750; line-height: 1.04; letter-spacing: -.012em; }
+
+  .split { flex: 1; min-height: 0; display: grid; grid-template-columns: 2.1fr 1fr; gap: 30px; align-items: start; }
+  .shot { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: #000;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5); }
+  .shot video, .shot img { display: block; width: 100%; height: auto; }
+  .side { min-width: 0; display: flex; flex-direction: column; gap: 16px; font-size: 18px; }
+  .side p { margin: 0; }
+
+  .ask { margin: 0; background: var(--card-2); border-left: 3px solid var(--user); border-radius: 4px 12px 12px 4px;
+    padding: 12px 16px; font-size: 17px; line-height: 1.4; color: var(--ink); }
+  .ask small { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--user);
+    text-transform: uppercase; margin-bottom: 4px; }
+  .got { margin: 0; background: var(--card); border-left: 3px solid var(--executor); border-radius: 4px 12px 12px 4px;
+    padding: 12px 16px; font-size: 17px; line-height: 1.4; }
+  .got small { display: block; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; color: var(--executor);
+    text-transform: uppercase; margin-bottom: 4px; }
+
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 17px; }
+  .checks li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: baseline; }
+  .checks li::before { content: "✓"; color: var(--executor); font-weight: 700; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 8px 22px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .stat b { display: block; font-family: var(--mono); font-weight: 600; font-size: 25px; color: var(--ink); line-height: 1.1; }
+  .stat span { font-size: 14px; color: var(--muted); }
+  .model { font-family: var(--mono); font-size: 13px; color: var(--faint); }
+
+  /* cover */
+  .cover { justify-content: center; position: relative; gap: 0; }
+  .cover .kanji { position: absolute; right: -10px; top: 50%; transform: translateY(-52%); font-family: var(--kanji);
+    font-weight: 700; font-size: 560px; line-height: 1; color: rgba(235, 233, 227, .07); pointer-events: none; }
+  .cover h1 { font-size: 200px; font-weight: 800; letter-spacing: -.035em; line-height: .9; margin: 6px 0 22px -6px; }
+  .cover .tagline { font-family: var(--display); font-size: 50px; font-weight: 650; line-height: 1.08; margin: 0 0 16px; }
+  .cover .sub { font-size: 23px; color: var(--muted); max-width: 780px; margin: 0 0 40px; }
+  .roles { display: flex; flex-wrap: wrap; gap: 12px; }
+  .role { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border-radius: 999px;
+    background: rgba(34, 33, 30, .85); border: 1px solid var(--line); font-size: 18px; }
+  .role::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .role b { font-weight: 650; }
+  .cover .source { position: absolute; left: 0; bottom: 0; font-family: var(--mono); font-size: 13px; color: var(--faint); }
+
+  /* how it works */
+  .how { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.62fr 1fr; gap: 34px; align-items: center; }
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; counter-reset: flow; }
+  .flow li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+  .flow li::before { counter-increment: flow; content: counter(flow); display: grid; place-items: center; width: 44px;
+    height: 44px; border-radius: 50%; border: 2px solid var(--c); color: var(--c); font-family: var(--mono);
+    font-weight: 600; font-size: 19px; }
+  .flow b { display: block; font-family: var(--display); font-size: 27px; font-weight: 700; color: var(--c); line-height: 1.15; }
+  .flow span { font-size: 18px; color: var(--muted); }
+
+  /* blog scroller */
+  .browser { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fff;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5); }
+  .browser .bar { background: #2b2925; color: var(--muted); font-family: var(--mono); font-size: 12px; padding: 8px 12px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .browser .view { height: 300px; overflow: hidden; }
+  .browser .view img { display: block; width: 100%; height: auto; animation: read 46s ease-in-out infinite alternate; }
+  @keyframes read { 0%, 6% { transform: translateY(0); } 100% { transform: translateY(calc(-100% + 300px)); } }
+
+  /* paint */
+  .drawings { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .drawings img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #fff;
+    border-radius: 6px; }
+
+  /* e2e */
+  .tiles { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }
+  .tile { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .tile img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px;
+    border: 1px solid var(--line); background: #fff; }
+  .tile b { font-family: var(--display); font-size: 22px; font-weight: 700; line-height: 1.15; }
+  .tile p { margin: 0; font-size: 16px; color: var(--muted); line-height: 1.38; }
+  .tile .model { margin-top: auto; }
+  .pass { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 13px; font-weight: 600;
+    color: var(--executor); letter-spacing: .08em; }
+  .pass::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--executor); }
+  .suite { display: flex; align-items: baseline; gap: 18px; padding: 16px 20px; border-radius: 12px; background: var(--card);
+    border: 1px solid var(--line); }
+  .suite b { font-family: var(--display); font-size: 44px; font-weight: 800; color: var(--executor); line-height: 1; }
+  .suite span { color: var(--muted); font-size: 18px; }
+
+  /* limits */
+  .rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .rules li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; }
+  .rules svg { width: 30px; height: 30px; stroke: var(--c); fill: none; stroke-width: 2; stroke-linecap: round;
+    stroke-linejoin: round; margin-top: 3px; }
+  .rules b { display: block; font-family: var(--display); font-size: 25px; font-weight: 700; line-height: 1.15; }
+  .rules span { font-size: 17px; color: var(--muted); }
+
+  /* numbers */
+  .nums { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-content: center; }
+  .num { padding: 22px 24px 20px; border-radius: 16px; background: var(--card); border: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 6px; }
+  .num b { font-family: var(--display); font-size: 84px; font-weight: 800; line-height: .95; letter-spacing: -.02em;
+    color: var(--c, var(--ink)); }
+  .num b small { font-size: .42em; font-weight: 650; letter-spacing: 0; margin-right: .18em; vertical-align: .62em; }
+  .num span { font-size: 18px; color: var(--muted); }
+  .foot { font-family: var(--mono); font-size: 13px; color: var(--faint); margin: 0; }
+
+  .strip { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
+  .strip figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .strip figcaption { font-size: 17px; color: var(--muted); }
+  .strip figcaption b { display: block; color: var(--ink); font-family: var(--display); font-size: 21px; }
+  .caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px;
+    align-content: center; flex: 1; }
+  .caps li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; font-size: 27px; font-weight: 600; line-height: 1.25; }
+  .caps li::before { content: "✓"; color: var(--executor); font-weight: 700; }
+  .caps li span { display: block; font-size: 19px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+</style>
+
+<div class="reveal">
+  <div class="slides">
+
+    <section>
+      <div class="page cover">
+        <div class="kanji" aria-hidden="true">式</div>
+        <p class="kicker">agente de computador para Windows</p>
+        <h1>SHIKI</h1>
+        <p class="tagline">Você pede. Ele usa o seu PC.</p>
+        <p class="sub">Lê a tela, mexe o mouse e o teclado, divide o pedido em etapas, aprende com cada missão e para antes de pagar.</p>
+        <div class="roles">
+          <span class="role" style="--c: var(--director)"><b>Director</b> planeja</span>
+          <span class="role" style="--c: var(--executor)"><b>Executor</b> age</span>
+          <span class="role" style="--c: var(--bad)"><b>Decider</b> confere</span>
+          <span class="role" style="--c: var(--memory)"><b>Memória</b> aprende</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker" style="--dot: var(--director)">como funciona</p>
+          <h2>Um pedido vira um plano. O plano vira cliques.</h2>
+        </div>
+        <div class="how">
+          <figure class="shot"><img src="media/app.jpg" alt="O app do SHIKI: sessões à esquerda, a conversa com o pedido, o plano e o resultado no meio, as etapas à direita"></figure>
+          <ol class="flow">
+            <li style="--c: var(--user)"><div><b>Você pede</b><span>em português, como pediria a uma pessoa</span></div></li>
+            <li style="--c: var(--director)"><div><b>Director planeja</b><span>etapas, cada uma com um critério de pronto</span></div></li>
+            <li style="--c: var(--executor)"><div><b>Executor age</b><span>vê a tela, clica, digita, rola e confere cada passo</span></div></li>
+            <li style="--c: var(--memory)"><div><b>Memória aprende</b><span>guarda o que funcionou para a próxima vez</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker">caso real · 14/10</p>
+          <h2>Login com Google no site, configurado pelo SHIKI</h2>
+        </div>
+        <p class="ask"><small>o pedido</small>“eu preciso configurar o supabase do meu site…”, junto com as instruções que outro agente tinha passado</p>
+        <div class="strip">
+          <figure><div class="shot"><img src="media/supa_client.jpg" alt="Google Cloud: criando o cliente OAuth com a origem e a URI de redirecionamento do Supabase"></div>
+            <figcaption><b>Google Cloud</b>Projeto, branding, escopos e o cliente OAuth “WaifuRush Web”</figcaption></figure>
+          <figure><div class="shot"><img src="media/supa_urls.jpg" alt="Supabase: adicionando as URLs de redirecionamento"></div>
+            <figcaption><b>Supabase</b>Client ID e secret no provedor Google, URLs de redirecionamento salvas</figcaption></figure>
+          <figure><div class="shot"><img src="media/supa_prod.jpg" alt="Google Cloud: status de publicação Em produção"></div>
+            <figcaption><b>Publicado</b>O app OAuth saiu do modo de teste: “Em produção”</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker">caso real · o resultado</p>
+          <h2>Do projeto vazio ao app em produção, sem perguntar nada</h2>
+        </div>
+        <div class="nums" style="grid-template-columns: repeat(4, 1fr)">
+          <div class="num" style="--c: var(--executor)"><b>78</b><span>passos na tela</span></div>
+          <div class="num"><b>17,7</b><span>minutos</span></div>
+          <div class="num" style="--c: var(--user)"><b><small>US$</small>0,12</b><span>de custo total</span></div>
+          <div class="num" style="--c: var(--director)"><b>0</b><span>perguntas para você</span></div>
+        </div>
+        <p class="got"><small>e depois</small>Na mesma conversa, abriu uma janela anônima, entrou no site com “Continuar com Google” e confirmou que o login funciona.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker">o que ele pode fazer</p>
+          <h2>O que você faria com mouse e teclado</h2>
+        </div>
+        <ul class="caps">
+          <li><div>Configurar serviços na web<span>Google Cloud, Supabase, painéis de admin</span></div></li>
+          <li><div>Comprar até o carrinho<span>busca, compara e para antes de pagar</span></div></li>
+          <li><div>Pesquisar e montar páginas<span>capturou posts no X e escreveu um blog com eles</span></div></li>
+          <li><div>Mandar e-mail com anexo<span>pegou uma imagem e enviou pelo Gmail</span></div></li>
+          <li><div>Levar dados entre apps<span>de um CSV para o Google Docs e para o Grok</span></div></li>
+          <li><div>Preencher formulários<span>com os dados de um PDF anexado</span></div></li>
+          <li><div>Trabalhar com arquivos<span>escrever, salvar, planilhas, listas longas</span></div></li>
+          <li><div>Usar apps do Windows<span>Calculadora, Bloco de Notas, Paint, Gerenciador de Tarefas</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker" style="--dot: var(--memory)">memória</p>
+          <h2>Ele aprende com o tempo</h2>
+        </div>
+        <div class="split" style="grid-template-columns: 1.2fr 1fr; align-items: center">
+          <figure class="shot"><img src="media/memory.jpg" alt="O app mostrando Memória atualizada com 4 lembranças: user.md, apps/resend.md, apps/supabase.md e a rotina configurar-oauth-google-supabase"></figure>
+          <ul class="caps" style="grid-template-columns: 1fr; gap: 18px">
+            <li><div>Sobre você<span>preferências e respostas que você já deu, como o navegador que usa</span></div></li>
+            <li><div>Sobre cada app<span>onde fica cada coisa no Supabase, no Resend, no Paint…</span></div></li>
+            <li><div>Rotinas<span>a missão do Supabase virou a rotina “configurar OAuth Google + Supabase”</span></div></li>
+            <li><div>Na próxima vez<span>o plano já começa com o que funcionou. No teste, lembrou a assinatura de e-mail numa sessão nova sem perguntar.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="page">
+        <div>
+          <p class="kicker" style="--dot: var(--bad)">limites</p>
+          <h2>O que ele não faz sozinho</h2>
+        </div>
+        <ul class="caps" style="gap: 26px 40px">
+          <li><div>Pagar: nunca<span>antes de cada clique, o decider estima se aquilo paga; se paga, ele para e chama você</span></div></li>
+          <li><div>Enviar: um passo só<span>enviar, publicar ou confirmar vai sozinho, depois de conferir a tela</span></div></li>
+          <li><div>Apagar: bloqueado<span>a tecla Delete não existe para ele e scripts que apagam são barrados</span></div></li>
+          <li><div>Parar: ESC ESC<span>ESC ou Espaço duas vezes tira o controle dele na hora</span></div></li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="vendor/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0.03, minScale: 0.1, maxScale: 2,
+    center: false, hash: false, history: false, controls: true, progress: true, slideNumber: 'c/t',
+    transition: 'fade', transitionSpeed: 'fast', backgroundTransition: 'fade', autoPlayMedia: true,
+  });
+</script>
+<script src="../../shell/bridge.js"></script>

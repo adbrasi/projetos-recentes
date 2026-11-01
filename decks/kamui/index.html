@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kamUI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    --bg: #0d0b14;
+    --panel: #17141f;
+    --line: #2b2638;
+    --text: #ece8f4;
+    --muted: #9b93ad;
+    --accent: #8b6cff;
+    --warm: #ffb547;
+  }
+  html, body, .reveal-viewport { background: var(--bg); color-scheme: dark; }
+  .reveal { font-family: Inter, system-ui, sans-serif; color: var(--text); font-size: 30px; }
+  .reveal .slides { text-align: left; }
+  .reveal .slides section { height: 100%; padding: 0; box-sizing: border-box; }
+  .reveal h1, .reveal h2 { font-family: 'Space Grotesk', sans-serif; color: var(--text); text-transform: none; letter-spacing: -0.02em; margin: 0; }
+  .reveal h2 { font-size: 64px; line-height: 1.05; }
+  .reveal p { margin: 0; }
+  .reveal img, .reveal video { margin: 0; display: block; }
+  .kicker { font: 600 22px 'JetBrains Mono', monospace; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+  .lead { color: var(--muted); font-size: 30px; margin-top: 14px; max-width: 1500px; }
+  .lead b, .lead code { color: var(--text); }
+  code, .mono { font-family: 'JetBrains Mono', monospace; }
+  .reveal code { background: #221d2e; padding: 2px 8px; border-radius: 6px; font-size: 0.9em; color: var(--warm); }
+  .head { padding: 56px 72px 0; }
+  .shot { border-radius: 12px; box-shadow: 0 0 0 1px var(--line), 0 24px 60px -20px #000; background: var(--panel); }
+
+  /* 1: title */
+  .mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 10px; opacity: 0.6; }
+  .mosaic img { width: 100%; height: 100%; object-fit: cover; }
+  .veil { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 30% 55%, rgba(13,11,20,0.95) 25%, rgba(13,11,20,0.35) 100%); }
+  .title { position: absolute; left: 120px; top: 50%; transform: translateY(-50%); }
+  .title h1 { font-size: 200px; line-height: 0.9; background: linear-gradient(100deg, #fff 30%, var(--accent) 70%, var(--warm)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .title .sub { font-size: 44px; margin-top: 26px; font-family: 'Space Grotesk', sans-serif; }
+  .title .tags { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .tag { border: 1px solid var(--line); background: rgba(23,20,31,0.8); border-radius: 999px; padding: 8px 20px; font-size: 24px; color: var(--muted); }
+  .tag b { color: var(--text); }
+
+  /* 2: theme -> game */
+  .flow { display: grid; grid-template-columns: 560px 70px 1fr; align-items: center; gap: 24px; padding: 40px 72px 0; }
+  .flow pre { margin: 0; width: 100%; box-shadow: none; font-size: 25px; line-height: 1.5; }
+  .flow pre code { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 26px 30px; color: var(--text); max-height: none; }
+  .k { color: #9fc4ff; } .s { color: var(--warm); }
+  .arrow { font-size: 72px; color: var(--accent); text-align: center; }
+  .flow img { width: 100%; }
+  .outs { display: flex; gap: 12px; padding: 30px 72px 0; flex-wrap: wrap; }
+
+  /* 3: video */
+  .video-wrap { padding: 34px 72px 0; }
+  .video-wrap video { height: 720px; max-width: 100%; margin: 0 auto; border-radius: 12px; box-shadow: 0 0 0 1px var(--line); }
+
+  /* grids */
+  .grid { display: grid; gap: 16px; padding: 30px 72px 0; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .cell { position: relative; border-radius: 10px; overflow: hidden; background: var(--panel); box-shadow: 0 0 0 1px var(--line); }
+  .cell img { width: 100%; height: 100%; object-fit: cover; }
+  .cell .lab { position: absolute; left: 10px; bottom: 10px; background: rgba(13,11,20,0.85); border-radius: 6px; padding: 4px 12px; font-size: 20px; }
+  .cell .lab span { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 17px; margin-left: 8px; }
+  .genres .cell { height: 238px; }
+  .fams .cell { height: 330px; background: #2c2a30; }
+  .fams .cell img { object-fit: contain; }
+
+  /* 6: reference pairs */
+  .pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; padding: 26px 72px 0; }
+  .pair { margin: 0; }
+  .pair .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pair .duo div { position: relative; }
+  .pair img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; box-shadow: 0 0 0 1px var(--line); }
+  .pair .duo span { position: absolute; left: 8px; top: 8px; background: rgba(13,11,20,0.85); border-radius: 5px; padding: 2px 10px; font: 600 16px 'JetBrains Mono', monospace; color: var(--muted); }
+  .pair .duo div + div span { color: var(--warm); }
+  .pair figcaption { font-family: 'Space Grotesk', sans-serif; font-size: 26px; margin-top: 10px; }
+  .pair figcaption span { color: var(--muted); font: 20px Inter, sans-serif; margin-left: 10px; }
+
+  /* 7: export */
+  .two { display: grid; grid-template-columns: 640px 1fr; gap: 48px; padding: 36px 72px 0; align-items: start; }
+  .tree { font: 25px/1.55 'JetBrains Mono', monospace; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px 30px; display: grid; grid-template-columns: auto 1fr; column-gap: 28px; }
+  .tree .d { color: #9fc4ff; } .tree .c { color: var(--muted); }
+  .stack { display: grid; gap: 20px; }
+  .stack img { width: 100%; }
+  .row2 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+  .row2 img { height: 360px; width: 100%; object-fit: cover; object-position: top left; }
+
+  /* 8: agent */
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; padding: 34px 72px 0; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; }
+  .step .n { font: 600 20px 'JetBrains Mono', monospace; color: var(--accent); }
+  .step h3 { font: 700 30px 'Space Grotesk', sans-serif; margin: 6px 0 6px; color: var(--text); text-transform: none; }
+  .step p { color: var(--muted); font-size: 21px; line-height: 1.35; }
+  .agent-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 24px 72px 0; }
+  .agent-shots img { width: 100%; height: 470px; object-fit: cover; object-position: top; }
+
+  /* 9: editor */
+  .editor { display: grid; grid-template-columns: 1.55fr 1fr; gap: 22px; padding: 30px 72px 0; }
+  .editor img { width: 100%; }
+  .editor .side { display: grid; gap: 22px; }
+
+  /* 10: numbers */
+  .nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; padding: 44px 72px 0; }
+  .num { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px 26px 22px; }
+  .num b { display: block; font: 700 76px/1 'Space Grotesk', sans-serif; color: var(--text); }
+  .num.hl b { color: var(--warm); }
+  .num span { color: var(--muted); font-size: 22px; display: block; margin-top: 10px; }
+  .close { padding: 50px 72px 0; font: 700 56px 'Space Grotesk', sans-serif; }
+  .close em { font-style: normal; color: var(--accent); }
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 40px 72px 0; }
+  .strip img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; object-position: left top; border-radius: 10px; box-shadow: 0 0 0 1px var(--line); }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- 1. Nome -->
+  <section>
+    <div class="mosaic">
+      <img src="img/genre-rpg-pixelfantasy_ornate.jpg" alt="">
+      <img src="img/genre-fighting-manga_shonen.jpg" alt="">
+      <img src="img/genre-cardgame-necro.jpg" alt="">
+      <img src="img/genre-rpg-cutout_persona.jpg" alt="">
+      <img src="img/genre-racing-neon_tactical.jpg" alt="">
+      <img src="img/genre-lifesim-aquarela.jpg" alt="">
+      <img src="img/genre-rpg-cyber_street.jpg" alt="">
+      <img src="img/genre-skilltree-pixelfantasy_ornate.jpg" alt="">
+      <img src="img/genre-rpg-aquarela.jpg" alt="">
+    </div>
+    <div class="veil"></div>
+    <div class="title">
+      <h1>kamUI</h1>
+      <p class="sub">A interface inteira do seu jogo, gerada a partir de um tema.</p>
+      <div class="tags">
+        <span class="tag"><b>~600</b> sprites por kit</span>
+        <span class="tag"><b>13</b> famílias visuais</span>
+        <span class="tag"><b>53</b> estilos prontos</span>
+        <span class="tag">Phaser 4 · Godot 4</span>
+        <span class="tag">feito para agentes de IA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. O que faz -->
+  <section>
+    <div class="head">
+      <div class="kicker">O que faz</div>
+      <h2>Um arquivo de 13 linhas vira a UI do jogo.</h2>
+    </div>
+    <div class="flow">
+      <pre><code><span class="mono">{
+  <span class="k">"style"</span>: <span class="s">"punk"</span>,
+  <span class="k">"name"</span>: <span class="s">"Persona roxo"</span>,
+  <span class="k">"palette"</span>: {
+    <span class="k">"base"</span>: <span class="s">"#7b2cff"</span>,
+    <span class="k">"harmony"</span>: <span class="s">"analogous"</span>,
+    <span class="k">"overrides"</span>: {
+      <span class="k">"ink"</span>: <span class="s">"#050505"</span>,
+      <span class="k">"accent2"</span>: <span class="s">"#2f7bff"</span>
+    }
+  },
+  <span class="k">"shadow"</span>: { <span class="k">"color"</span>: <span class="s">"accent2"</span> }
+}</span></code></pre>
+      <div class="arrow">→</div>
+      <img class="shot" src="img/phaser-persona.jpg" alt="Kit Persona roxo rodando no Phaser">
+    </div>
+    <div class="outs">
+      <span class="tag"><b>nine-slice</b> em todas as peças</span>
+      <span class="tag"><b>estados</b> normal · pressionado · desativado · selecionado</span>
+      <span class="tag"><b>atlas</b> + manifest + tokens</span>
+      <span class="tag">rodando no <b>Phaser</b>, montado só com o kit exportado</span>
+    </div>
+  </section>
+
+  <!-- 3. Troca de estilo -->
+  <section>
+    <div class="head">
+      <div class="kicker">Uma tela, oito estilos</div>
+      <h2>Troque o visual sem tocar no jogo.</h2>
+      <p class="lead">Toda peça tem o mesmo nome em todo tema (<code>window_tab</code>, <code>button_normal</code>, <code>bar_boss</code>…). Mudar <code>style</code> e exportar de novo reveste o jogo inteiro.</p>
+    </div>
+    <div class="video-wrap">
+      <video src="img/theme-swap.mp4" data-autoplay autoplay loop muted playsinline></video>
+    </div>
+  </section>
+
+  <!-- 4. Todo gênero -->
+  <section>
+    <div class="head">
+      <div class="kicker">Todo gênero</div>
+      <h2>Da luta ao simulador de gestão.</h2>
+      <p class="lead">Cada gênero tem a sua tela de prévia: <b>~7 s</b> do tema à imagem.</p>
+    </div>
+    <div class="grid g3 genres">
+      <div class="cell"><img src="img/genre-fighting-manga_shonen.jpg" alt=""><div class="lab">Luta<span>manga_shonen</span></div></div>
+      <div class="cell"><img src="img/genre-cardgame-necro.jpg" alt=""><div class="lab">Cartas<span>necro</span></div></div>
+      <div class="cell"><img src="img/genre-rts-chrome.jpg" alt=""><div class="lab">Estratégia<span>chrome</span></div></div>
+      <div class="cell"><img src="img/genre-platformer-bold_volt.jpg" alt=""><div class="lab">Plataforma<span>bold_volt</span></div></div>
+      <div class="cell"><img src="img/genre-skilltree-pixelfantasy_ornate.jpg" alt=""><div class="lab">Árvore de habilidades<span>pixelfantasy_ornate</span></div></div>
+      <div class="cell"><img src="img/genre-lifesim-aquarela.jpg" alt=""><div class="lab">Simulação de vida<span>aquarela</span></div></div>
+      <div class="cell"><img src="img/genre-racing-neon_tactical.jpg" alt=""><div class="lab">Corrida<span>neon_tactical</span></div></div>
+      <div class="cell"><img src="img/genre-shooter-cyber_street.jpg" alt=""><div class="lab">Tiro<span>cyber_street</span></div></div>
+      <div class="cell"><img src="img/genre-management-notebook.jpg" alt=""><div class="lab">Gestão<span>notebook</span></div></div>
+    </div>
+  </section>
+
+  <!-- 5. Famílias -->
+  <section>
+    <div class="head">
+      <div class="kicker">Não é só cor</div>
+      <h2>13 famílias, cada uma com a sua construção.</h2>
+      <p class="lead">Molduras, formas, mostradores, balões de fala, ícones. Cada decoração tem nome e sai com uma linha: <code>"ornament": { "remove": ["stripes"] }</code></p>
+    </div>
+    <div class="grid g3 fams">
+      <div class="cell"><img src="img/fam-gold.jpg" alt=""><div class="lab">Molduras ornamentadas</div></div>
+      <div class="cell"><img src="img/fam-frost.jpg" alt=""><div class="lab">Mesma peça, outro ornamento</div></div>
+      <div class="cell"><img src="img/fam-forms.jpg" alt=""><div class="lab">Formas: escudo, hexágono, fita</div></div>
+      <div class="cell"><img src="img/fam-radial.jpg" alt=""><div class="lab">Radiais: anel, mostrador, roda</div></div>
+      <div class="cell"><img src="img/fam-cyber.jpg" alt=""><div class="lab">Cyberpunk</div></div>
+      <div class="cell"><img src="img/fam-manga.jpg" alt=""><div class="lab">Balões de mangá</div></div>
+    </div>
+  </section>
+
+  <!-- 6. Jogos reais -->
+  <section>
+    <div class="head">
+      <div class="kicker">Fiel à referência</div>
+      <h2>Recria telas de jogos de verdade.</h2>
+      <p class="lead">À esquerda, o jogo. À direita, a mesma tela montada só com os sprites que o kamUI exportou.</p>
+    </div>
+    <div class="pairs">
+      <figure class="pair"><div class="duo"><div><img src="img/pair-unite-0.jpg" alt=""><span>jogo</span></div><div><img src="img/pair-unite-1.jpg" alt=""><span>kamUI</span></div></div><figcaption>Pokémon Unite<span>configurações</span></figcaption></figure>
+      <figure class="pair"><div class="duo"><div><img src="img/pair-warzone-0.jpg" alt=""><span>jogo</span></div><div><img src="img/pair-warzone-1.jpg" alt=""><span>kamUI</span></div></div><figcaption>Call of Duty: Warzone<span>seleção de perks</span></figcaption></figure>
+      <figure class="pair"><div class="duo"><div><img src="img/pair-bleach-0.jpg" alt=""><span>jogo</span></div><div><img src="img/pair-bleach-1.jpg" alt=""><span>kamUI</span></div></div><figcaption>Bleach (gacha)<span>passe de temporada</span></figcaption></figure>
+      <figure class="pair"><div class="duo"><div><img src="img/pair-vn-artdeco-0.jpg" alt=""><span>jogo</span></div><div><img src="img/pair-vn-artdeco-1.jpg" alt=""><span>kamUI</span></div></div><figcaption>Visual novel art déco<span>caixa de diálogo</span></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 7. Exporta -->
+  <section>
+    <div class="head">
+      <div class="kicker">Pronto para o motor</div>
+      <h2>Sai do kamUI e entra no jogo.</h2>
+    </div>
+    <div class="two">
+      <div class="tree"><span class="d">meu-kit/</span><span class="c"></span><span class="d" style="padding-left:1.2em">sprites/</span><span class="c">597 PNGs</span><span class="" style="padding-left:1.2em">atlas.png</span><span class="c">multiatlas</span><span class="" style="padding-left:1.2em">manifest.json</span><span class="c">nine-slice, regiões</span><span class="" style="padding-left:1.2em">tokens.json</span><span class="c">cores, fonte, efeitos</span><span class="d" style="padding-left:1.2em">phaser/</span><span class="c">helper + exemplo</span><span class="d" style="padding-left:1.2em">godot/</span><span class="c">Theme + StyleBoxes</span><span class="" style="padding-left:1.2em">NAMES.md</span><span class="c">o que é cada peça</span><span class="" style="padding-left:1.2em">GUIDE.md</span><span class="c">preciso de X → use Y</span><span class="" style="padding-left:1.2em">llms.txt</span><span class="c">para agentes</span></div>
+      <div class="stack">
+        <img class="shot" src="img/atlas-warzone.jpg" alt="Atlas exportado" style="height:300px;object-fit:cover;object-position:top">
+        <div class="row2">
+          <img class="shot" src="img/genre-rpg-pixelfantasy_ornate.jpg" alt="">
+          <img class="shot" src="img/icons-adapt.jpg" alt="" style="object-fit:contain;background:#2c2a30">
+        </div>
+      </div>
+    </div>
+    <p class="lead" style="padding:22px 72px 0">Brilho, sombra e hover viram tokens que o motor aplica. Ícones de pacotes gratuitos são recoloridos para a paleta do kit.</p>
+  </section>
+
+  <!-- 8. Agente -->
+  <section>
+    <div class="head">
+      <div class="kicker">Skill para agentes</div>
+      <h2>"Faz a UI do jogo." E o agente faz.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Direção de arte</h3><p>Lê o jogo e escolhe família, paleta e forma.</p></div>
+      <div class="step"><div class="n">02</div><h3>Tema</h3><p><code>kamui new</code> + ajustes; <code>kamui check</code> valida.</p></div>
+      <div class="step"><div class="n">03</div><h3>Prévia</h3><p>A tela do gênero em ~7 s; o agente olha e corrige.</p></div>
+      <div class="step"><div class="n">04</div><h3>Kit</h3><p>~600 sprites em ~45 s, já verificados.</p></div>
+      <div class="step"><div class="n">05</div><h3>No jogo</h3><p>Usa a variedade do kit, não três peças repetidas.</p></div>
+    </div>
+    <div class="agent-shots">
+      <img class="shot" src="img/genre-vn-vn_artdeco.jpg" alt="">
+      <img class="shot" src="img/preview-wood.jpg" alt="">
+    </div>
+  </section>
+
+  <!-- 9. Editor -->
+  <section>
+    <div class="head">
+      <div class="kicker">Editor ao vivo</div>
+      <h2>Clique numa peça, ajuste, exporte.</h2>
+      <p class="lead">Galeria de estilos, inspetor por peça, variações sugeridas e exportação em .zip. O arquivo do tema recarrega sozinho quando muda no disco.</p>
+    </div>
+    <div class="editor">
+      <img class="shot" src="img/editor-aquarela.jpg" alt="Editor com o estilo aquarela">
+      <div class="side">
+        <img class="shot" src="img/editor-variations.jpg" alt="Variações sugeridas" style="height:290px;object-fit:cover;object-position:60% 30%">
+        <img class="shot" src="img/editor-pixel.jpg" alt="Estilo pixel no editor" style="height:290px;object-fit:cover;object-position:70% 40%">
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Números -->
+  <section>
+    <div class="head">
+      <div class="kicker">Em números</div>
+      <h2>kamUI</h2>
+    </div>
+    <div class="nums">
+      <div class="num hl"><b>291</b><span>tipos de peça</span></div>
+      <div class="num hl"><b>~600</b><span>sprites por kit</span></div>
+      <div class="num"><b>13</b><span>famílias visuais</span></div>
+      <div class="num"><b>53</b><span>estilos prontos</span></div>
+      <div class="num"><b>183</b><span>parâmetros de tema</span></div>
+      <div class="num"><b>11</b><span>telas de gênero</span></div>
+      <div class="num"><b>~7 s</b><span>por prévia</span></div>
+      <div class="num"><b>~45 s</b><span>por kit completo</span></div>
+      <div class="num"><b>0</b><span>dependências no núcleo</span></div>
+      <div class="num"><b>330</b><span>testes automáticos</span></div>
+    </div>
+    <p class="close">Descreva o jogo. <em>Receba a interface.</em></p>
+    <div class="strip">
+      <img src="img/genre-rpg-necro.jpg" alt="">
+      <img src="img/genre-rpg-cutout_persona.jpg" alt="">
+      <img src="img/genre-rpg-manga_shonen.jpg" alt="">
+      <img src="img/genre-rpg-aquarela.jpg" alt="">
+    </div>
+  </section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({ width: 1920, height: 1080, margin: 0.02, center: false, hash: true, transition: 'fade', controls: true, progress: true });
+</script>
+<script src="../../shell/bridge.js"></script>
+</body>
+</html>

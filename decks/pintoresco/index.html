@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pintoresco</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;600&display=swap">
+<style>
+  html, body { background: #16161d; }
+  .reveal .slides > section { box-sizing: border-box; width: 1920px; height: 1080px; text-align: left; }
+  .reveal .slides > section > * { position: relative; }
+  .reveal .slides > section > aside { display: none; }
+  .reveal p, .reveal h1, .reveal h2 { margin: 0; }
+  x-shape[kind="arrow-right"] { display: block; flex: none;
+    clip-path: polygon(0 35%, 65% 35%, 65% 0, 100% 50%, 65% 100%, 65% 65%, 0 65%); }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section id="cover" data-transition="fade" style="background:#16161d;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:end;gap:24px">
+<img src="img/lava-map.jpg" alt="Mapa montado com tiles de lava e caminho de pedra" style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover">
+<div style="position:absolute;left:0;top:0;width:1920px;height:1080px;background:linear-gradient(to top, rgba(22,22,29,0.95) 0%, rgba(22,22,29,0.6) 40%, rgba(22,22,29,0) 70%)"></div>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:160px;font-weight:700;line-height:1;letter-spacing:-4px">Pintoresco</h1>
+<p style="font-size:44px;color:#f2efe8">Um print do jogo vira um tileset pronto para pintar mapas.</p>
+<aside>Pintoresco: agentes de IA desenham tilesets de jogo a partir de um screenshot.</aside>
+</section>
+
+<section id="what" data-transition="fade" style="background:#16161d;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Um print vira 47 tiles</h2>
+<div style="display:flex;gap:64px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/cult-ref.jpg" alt="Screenshot de referência do jogo" style="width:768px;height:480px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">O screenshot do jogo</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/cult-map.jpg" alt="Mapa pintado com os tiles de grama e terra" style="width:768px;height:480px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Um mapa pintado com os tiles</p>
+</div>
+</div>
+<p style="font-size:36px;color:#f2efe8">Bordas, cantos de fora e de dentro: <span style="color:#f28b2e">encaixam em qualquer direção.</span></p>
+<aside>O agente lê o print, separa os materiais e desenha cada um. A ferramenta corta os 47 tiles de cada material.</aside>
+</section>
+
+<section id="mold" data-transition="fade" style="background:#16161d;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Molde vetorial, acabamento por IA</h2>
+<div style="display:flex;gap:96px;align-items:center;justify-content:center">
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/lava-mold.jpg" alt="Moldura de lava desenhada em vetor" style="width:560px;height:560px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">O molde, desenhado pelo agente</p>
+</div>
+<x-shape kind="arrow-right" style="background:#f28b2e;width:120px;height:60px"></x-shape>
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/lava-ai.jpg" alt="A mesma moldura de lava acabada pelo modelo de imagem" style="width:560px;height:560px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Depois do modelo de imagem</p>
+</div>
+</div>
+<aside>O modelo de imagem só muda o acabamento. Os contornos ficam iguais, por isso os tiles continuam encaixando.</aside>
+</section>
+
+<section id="deadcells" data-transition="fade" style="background:#1e1e27;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Plataforma 2D: gosma sobre tijolo</h2>
+<div style="display:flex;gap:64px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/dc-mold.jpg" alt="Molde vetorial de tijolo com gosma verde" style="width:800px;height:500px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Molde</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/dc-ai.jpg" alt="Tijolo com gosma verde acabado pelo modelo de imagem" style="width:800px;height:500px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Acabado</p>
+</div>
+</div>
+<aside>Vista lateral: topo, paredes e parte de baixo, cada lado com a sua borda.</aside>
+</section>
+
+<section id="hollow" data-transition="fade" style="background:#1e1e27;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Pedra empilhada, cantos que viram</h2>
+<img src="img/hk-maps.jpg" alt="Dois mapas de pedra em vista lateral, acabados sem e com a referência do jogo" style="width:1664px;height:582px;object-fit:cover;border-radius:16px">
+<div style="display:flex;gap:64px">
+<p style="flex:1;font-size:28px;color:#a9a6b3">Acabado sem referência</p>
+<p style="flex:1;font-size:28px;color:#a9a6b3">Acabado com o print do jogo como estilo</p>
+</div>
+<aside>As fiadas de pedra contornam os cantos de fora e de dentro sem emenda.</aside>
+</section>
+
+<section id="pixel" data-transition="fade" style="background:#16161d;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Pixel art ou pintado</h2>
+<div style="display:flex;gap:64px">
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/sd-px.png" alt="Mapa de grama e terra em pixel art" style="width:800px;height:500px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Pixel art, 16 px por tile</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<img src="img/sd-paint.jpg" alt="Mapa de grama e terra pintado em alta resolução" style="width:800px;height:500px;object-fit:cover;border-radius:16px">
+<p style="font-size:28px;color:#a9a6b3">Pintado, em alta resolução</p>
+</div>
+</div>
+<aside>O estilo segue o jogo: um jogo em pixel art recebe pixel art.</aside>
+</section>
+
+<section id="agent" data-transition="fade" style="background:#16161d;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:row;gap:80px;align-items:center">
+<img src="img/cult-map.jpg" alt="Mapa de grama e terra feito pelo agente sozinho" style="width:960px;height:600px;object-fit:cover;border-radius:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:40px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:700;line-height:1.1">Um agente barato, sozinho</h2>
+<p style="font-size:32px;color:#a9a6b3">DeepSeek V4.1 Flash, num jogo que a skill nunca viu</p>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1;color:#f28b2e">63 min</p>
+<p style="font-size:28px;color:#a9a6b3">do print ao conjunto entregue, sem ajuda</p>
+</div>
+</div>
+<aside>Primeiro teste limpo: a skill não cita o jogo. 70 comandos, conjunto sem emendas.</aside>
+</section>
+
+<section id="numbers" data-transition="fade" style="background:#1e1e27;color:#f2efe8;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:96px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1">Em números</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #f28b2e;padding:32px 0 0 0">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">47</p>
+<p style="font-size:32px;color:#a9a6b3">tiles por material, com todas as bordas e cantos</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #f28b2e;padding:32px 0 0 0">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">~1 s</p>
+<p style="font-size:32px;color:#a9a6b3">para ver cada etapa do desenho</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #f28b2e;padding:32px 0 0 0">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">24–63</p>
+<p style="font-size:32px;color:#a9a6b3">minutos por conjunto, com o agente sozinho</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;border-top:4px solid #f28b2e;padding:32px 0 0 0">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1">4</p>
+<p style="font-size:32px;color:#a9a6b3">editores: Godot, Tiled, LDtk e Unity</p>
+</div>
+</div>
+<aside>Tempos das três rodadas do DeepSeek: 24, 41 e 63 minutos.</aside>
+</section>
+
+<section id="close" data-transition="fade" style="background:#f28b2e;color:#16161d;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:160px;font-weight:700;line-height:1;letter-spacing:-4px">Pintoresco</h1>
+<p style="font-size:44px;color:#16161d">Desenhado por agentes. Acabado por IA. Pronto para o mapa.</p>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({ width: 1920, height: 1080, margin: 0, center: false, hash: false,
+    display: 'flex', transition: 'fade', backgroundTransition: 'fade' });
+</script>
+<script src="../../shell/bridge.js"></script>
+</body>
+</html>

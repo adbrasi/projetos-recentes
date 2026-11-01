@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marionete</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #22232b;
+    --ink: #f2f0ea;
+    --dim: #9a9aa6;
+    --accent: #f5b041;
+    --good: #6fd3a0;
+    --bad: #ff7a6b;
+    --r-background-color: var(--bg);
+    --r-main-font: "Inter", sans-serif;
+    --r-heading-font: "Space Grotesk", sans-serif;
+    --r-main-color: var(--ink);
+    --r-heading-color: var(--ink);
+    --r-heading-text-transform: none;
+    --r-heading-letter-spacing: -0.02em;
+  }
+  body { background: var(--bg); }
+  .reveal { font-size: 30px; }
+  .reveal h1 { font-size: 3.6em; margin: 0; }
+  .reveal h2 { font-size: 1.7em; margin: 0 0 0.15em; }
+  .reveal .lead { color: var(--dim); font-size: 0.95em; margin: 0 0 0.7em; }
+  .reveal .accent { color: var(--accent); }
+  .row { display: flex; gap: 18px; justify-content: center; align-items: flex-start; }
+  .row figure { margin: 0; flex: 1; min-width: 0; }
+  .row img, .hero img { width: 100%; height: auto; max-height: 520px; object-fit: contain; border-radius: 10px; display: block; margin: 0 auto; }
+  .row.tall img { max-height: 600px; }
+  figcaption { font-size: 0.7em; color: var(--dim); margin-top: 0.35em; }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  .tag { display: inline-block; font-size: 0.62em; font-weight: 600; padding: 2px 10px; border-radius: 99px; margin-bottom: 6px; }
+  .tag.before { background: color-mix(in srgb, var(--bad) 20%, transparent); color: var(--bad); }
+  .tag.after { background: color-mix(in srgb, var(--good) 20%, transparent); color: var(--good); }
+  .hero { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 14px; align-items: end; margin-top: 0.6em; }
+  .hero img { max-height: 430px; }
+  .flow { display: flex; align-items: stretch; justify-content: center; gap: 10px; font-size: 0.68em; margin: 0.4em 0 0.8em; }
+  .flow .box { background: #2d2e38; border: 1px solid #3c3d4a; border-radius: 10px; padding: 12px 14px; text-align: left; flex: 1; }
+  .flow .box b { display: block; color: var(--accent); font-family: var(--r-heading-font); font-size: 1.15em; margin-bottom: 4px; }
+  .flow .arrow { align-self: center; color: var(--dim); font-size: 1.5em; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px 40px; margin-top: 0.8em; text-align: left; }
+  .stats div { border-top: 2px solid #3c3d4a; padding-top: 10px; }
+  .stats b { display: block; font-family: var(--r-heading-font); font-size: 2.2em; color: var(--accent); line-height: 1.05; }
+  .stats span { font-size: 0.8em; color: var(--dim); }
+  .note { font-size: 0.66em; color: var(--dim); margin-top: 0.6em; }
+  .note code { color: var(--ink); background: #2d2e38; padding: 1px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- 1. Name -->
+  <section>
+    <h1>Marionete</h1>
+    <p class="lead">Animação de jogo para qualquer modelo rigado, <span class="accent">sem abrir um editor</span>.</p>
+    <div class="hero">
+      <img src="media/combo_join.gif" alt="Goblin fazendo jab, cross e chute em sequência">
+      <img src="media/mech_fire.gif" alt="Mech atirando">
+      <img src="media/slash_smear.gif" alt="Boneco com golpe de espada estilizado">
+    </div>
+  </section>
+
+  <!-- 2. What it does -->
+  <section>
+    <h2>O que faz</h2>
+    <p class="lead">Um modelo + um JSON curto → animações prontas, limpas e exportadas.</p>
+    <div class="flow">
+      <div class="box"><b>Entrada</b>GLB com esqueleto<br>(goblin, robô, qualquer rig)</div>
+      <div class="arrow">→</div>
+      <div class="box"><b>Fonte</b>banco de ~7400 clipes<br>texto (UniMate)<br>poses-chave</div>
+      <div class="arrow">→</div>
+      <div class="box"><b>Limpeza</b>pés no chão<br>loops fechados<br>emendas sem salto</div>
+      <div class="arrow">→</div>
+      <div class="box"><b>Polish</b>física, peso<br>cartoon, smear</div>
+      <div class="arrow">→</div>
+      <div class="box"><b>Saída</b>GLB com eventos<br>e loops, pronto<br>pro Godot</div>
+    </div>
+    <div class="row">
+      <figure><img src="media/goblin_run.gif" alt="Goblin correndo"></figure>
+      <figure><img src="media/autopose_reach.gif" alt="Boneco agachando para alcançar um ponto"></figure>
+      <figure><img src="media/mech_walk.gif" alt="Mech andando"></figure>
+    </div>
+  </section>
+
+  <!-- 3. Any humanoid -->
+  <section>
+    <h2>Um banco, qualquer corpo</h2>
+    <p class="lead">~7400 clipes (Mixamo, Bandai Namco, BONES-SEED, Quaternius) reajustados para o esqueleto que chegar.</p>
+    <div class="row tall">
+      <figure><img src="media/xbot_run.gif" alt="X Bot correndo"><figcaption><b>X Bot</b> · proporção humana</figcaption></figure>
+      <figure><img src="media/goblin_run.gif" alt="Goblin correndo"><figcaption><b>Goblin</b> · cabeça enorme, perna curta</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 4. Combos -->
+  <section>
+    <h2>Combos sem a paradinha</h2>
+    <p class="lead">Acha o impacto de cada golpe e emenda um no outro, cortando a volta à guarda.</p>
+    <div class="row">
+      <figure><span class="tag before">antes</span><img src="media/combo_before.gif" alt="Combo com pausa entre os golpes"><figcaption>~1 s parado entre os golpes</figcaption></figure>
+      <figure><span class="tag after">depois · join</span><img src="media/combo_join.gif" alt="Combo emendado"><figcaption><b>0,47 s</b> e <b>0,50 s</b> cortados · salto de pose na emenda <b>0,00</b></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 5. Key poses -->
+  <section>
+    <h2>Poucas poses, movimento inteiro</h2>
+    <p class="lead">Você marca as poses-chave; o resto vem do contexto aprendido no banco.</p>
+    <div class="row tall">
+      <figure><img src="media/goblin_jump_keys.gif" alt="Goblin pulando a partir de 7 poses"><figcaption><b>7 poses</b> → pulo com antecipação e queda</figcaption></figure>
+      <figure><img src="media/kick_keys_fill.gif" alt="Chute preenchido a partir de 12 poses"><figcaption><b>12 poses</b> → chute completo</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 6. Style -->
+  <section>
+    <h2>Mesmo golpe, outro estilo</h2>
+    <p class="lead">Uma linha no JSON muda o timing e o exagero.</p>
+    <div class="row">
+      <figure><img src="media/slash_original.gif" alt="Golpe original"><figcaption><b>original</b></figcaption></figure>
+      <figure><img src="media/slash_cartoon.gif" alt="Golpe cartoon"><figcaption><b>cartoon</b> · antecipação e overshoot</figcaption></figure>
+      <figure><img src="media/slash_smear.gif" alt="Golpe com smear"><figcaption><b>smear</b> · estica no quadro rápido</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 7. Physics -->
+  <section>
+    <h2>Física onde importa</h2>
+    <p class="lead">Pulo em parábola de verdade, pés travados no chão.</p>
+    <div class="row tall">
+      <figure><span class="tag before">clipe cru</span><img src="media/jump_original.gif" alt="Pulo original"></figure>
+      <figure><span class="tag after">balístico</span><img src="media/jump_ballistic.gif" alt="Pulo balístico"><figcaption>footlock: <b>0 cm</b> de pé escorregando</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 8. Transitions and edits -->
+  <section>
+    <h2>Transições e edições</h2>
+    <p class="lead">Encadeia clipes diferentes e troca partes do corpo sem quebrar o resto.</p>
+    <div class="row">
+      <figure><img src="media/run_to_kick.gif" alt="Corrida emendando num chute"><figcaption><b>corrida → chute</b></figcaption></figure>
+      <figure><img src="media/slash_to_jump.gif" alt="Golpe emendando num pulo"><figcaption><b>golpe → pulo</b></figcaption></figure>
+      <figure><img src="media/rifle_run.gif" alt="Corrida com braços segurando rifle"><figcaption><b>corrida + braços de rifle</b></figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 9. Agents -->
+  <section>
+    <h2>Feito para agentes</h2>
+    <p class="lead">Modelos baratos usaram sozinhos, só com a documentação, num modelo que nunca viram.</p>
+    <div class="row tall">
+      <figure><img src="media/agent_deepseek_combo.gif" alt="Combo feito pelo DeepSeek"><figcaption><b>DeepSeek</b> · jab → cross → chute · nota <b>7/10</b></figcaption></figure>
+      <figure><img src="media/agent_haiku_flip.gif" alt="Mortal feito pelo Haiku"><figcaption><b>Haiku</b> · mortal · nota <b>6/10</b></figcaption></figure>
+    </div>
+    <p class="note">Cada tropeço deles virou correção geral: avisos de alcance, <code>join</code>, pareamento de dedos.</p>
+  </section>
+
+  <!-- 10. Numbers -->
+  <section>
+    <h2>Em números</h2>
+    <div class="stats">
+      <div><b>~7400</b><span>clipes no banco, em qualquer humanoide</span></div>
+      <div><b>0 cm</b><span>de pé escorregando com footlock</span></div>
+      <div><b>0,00</b><span>de salto de pose nas emendas do combo</span></div>
+      <div><b>1 JSON</b><span>por personagem, todas as animações</span></div>
+      <div><b>GLB</b><span>com eventos, loops e emendas, lido pelo Godot</span></div>
+      <div><b>CLI</b><span>um comando por clipe: <code>marionete anim</code></span></div>
+    </div>
+  </section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, controls: true, progress: true, center: true, width: 1600, height: 900, margin: 0.04, transition: "fade" });
+</script>
+<script src="../../shell/bridge.js"></script>
+</body>
+</html>

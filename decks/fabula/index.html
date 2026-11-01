@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fabula</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --bg: #07070a;
+    --fg: #f4f2ee;
+    --muted: #9a98a3;
+    --orange: #ff7a1a;
+    --cyan: #3fe0ff;
+    --panel: #15141b;
+    --line: #2a2833;
+  }
+  html, body, .reveal-viewport { background: var(--bg); }
+  .reveal { font-family: 'Space Grotesk', system-ui, sans-serif; color: var(--fg); font-size: 34px; }
+  .reveal .slides { text-align: left; }
+  .reveal h1, .reveal h2 { font-family: inherit; font-weight: 700; letter-spacing: -0.02em; text-transform: none; color: var(--fg); margin: 0 0 18px; }
+  .reveal h1 { font-size: 150px; line-height: 0.9; }
+  .reveal h2 { font-size: 64px; line-height: 1; }
+  .reveal p { margin: 0; }
+  .kicker { color: var(--orange); font-size: 22px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .lead { color: var(--muted); font-size: 30px; line-height: 1.35; max-width: 1100px; }
+  .accent { color: var(--cyan); }
+  .reveal img, .reveal video { display: block; margin: 0; max-width: none; border-radius: 10px; }
+  .cap { font-size: 18px; color: var(--muted); margin-top: 8px; }
+  .shadow { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+
+  /* Cover */
+  /* Sections are only as tall as their content, so absolute parts are placed from the top of the 900 px slide. */
+  .cover-text { position: absolute; left: 40px; top: 470px; }
+  .cover-text .lead { color: #e8e4ff; font-size: 36px; max-width: 900px; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8); }
+  .cover-text h1 { text-shadow: 0 6px 40px rgba(0, 0, 0, 0.6); }
+
+  .row { display: flex; gap: 22px; align-items: flex-start; }
+  .grid { display: grid; gap: 16px; }
+  .fill { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Model grid */
+  .models { grid-template-columns: repeat(4, 1fr); margin-top: 26px; }
+  .models figure { margin: 0; position: relative; }
+  .models img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .tag { position: absolute; left: 10px; top: 10px; background: rgba(7, 7, 10, 0.82); color: var(--fg); font-size: 16px; font-weight: 500; padding: 4px 10px; border-radius: 99px; }
+
+  /* Refs to result */
+  .refs { grid-template-columns: repeat(2, 150px); }
+  .refs img { width: 150px; height: 150px; object-fit: contain; background: #000; border: 1px solid var(--line); }
+  .arrow { font-size: 64px; color: var(--orange); align-self: center; }
+
+  /* Crossfade of versions */
+  .xfade { position: relative; width: 1000px; aspect-ratio: 2736 / 1536; }
+  .xfade img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: fade3 9s infinite; }
+  .xfade img:nth-child(1) { animation-delay: 0s; }
+  .xfade img:nth-child(2) { animation-delay: 3s; }
+  .xfade img:nth-child(3) { animation-delay: 6s; }
+  .xfade .lbl { position: absolute; left: 14px; bottom: 14px; display: flex; gap: 8px; }
+  .xfade .lbl span { background: rgba(7, 7, 10, 0.82); font-size: 18px; padding: 4px 12px; border-radius: 99px; opacity: 0.35; animation: lbl3 9s infinite; }
+  .xfade .lbl span:nth-child(2) { animation-delay: 3s; }
+  .xfade .lbl span:nth-child(3) { animation-delay: 6s; }
+  @keyframes fade3 { 0% { opacity: 0; } 5% { opacity: 1; } 33% { opacity: 1; } 39% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes lbl3 { 0% { opacity: 0.35; } 5% { opacity: 1; color: var(--orange); } 33% { opacity: 1; color: var(--orange); } 39% { opacity: 0.35; color: var(--fg); } 100% { opacity: 0.35; } }
+
+  /* Icons and logos */
+  .icons { grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 24px; }
+  .icons img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+  /* Upscale zoom */
+  .zoom img { width: 520px; height: 520px; object-fit: cover; }
+
+  /* Numbers */
+  .stats { grid-template-columns: repeat(5, 1fr); gap: 18px; margin-top: 40px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px 24px; }
+  .stat b { display: block; font-size: 72px; line-height: 1; color: var(--orange); }
+  .stat span { display: block; font-size: 22px; color: var(--muted); margin-top: 8px; }
+  .strip { position: absolute; left: -64px; width: 1728px; top: 470px; height: 470px; display: flex; gap: 0; opacity: 0.9; }
+  .strip img { flex: 1; height: 100%; object-fit: cover; border-radius: 0; min-width: 0; }
+  .strip::after { content: ''; position: absolute; inset: 0; background: linear-gradient(var(--bg), transparent 55%); }
+
+  .quote { font-size: 24px; color: var(--fg); border-left: 3px solid var(--orange); padding: 4px 0 4px 16px; margin-top: 18px; max-width: 520px; line-height: 1.35; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- 1. Name -->
+  <section data-background-image="img/hero.webp" data-background-size="cover" data-background-opacity="0.95">
+    <div style="position:absolute;left:-80px;top:-40px;width:1760px;height:980px;background:linear-gradient(90deg,rgba(7,7,10,.85),rgba(7,7,10,.1) 70%)"></div>
+    <div class="cover-text">
+      <div class="kicker">Ferramenta pessoal de arte para jogos</div>
+      <h1>Fabula</h1>
+      <p class="lead">Você escreve o que quer em português. Ele escreve o prompt certo para cada modelo e entrega a arte pronta para o jogo.</p>
+    </div>
+  </section>
+
+  <!-- 2. What it does -->
+  <section>
+    <div class="kicker">O que faz</div>
+    <h2>Um app, 14 modelos, um pedido</h2>
+    <div class="row" style="margin-top:22px">
+      <img class="shadow" src="img/app-gallery.webp" style="width:1040px" alt="Galeria do Fabula com as artes do MechaBOT">
+      <div style="padding-top:10px">
+        <p class="lead" style="font-size:27px">Referências à esquerda, modo e modelo à direita, o pedido embaixo.</p>
+        <p class="lead" style="font-size:27px;margin-top:22px">O Claude transforma o pedido em prompt no jeito de cada modelo: GPT Image, Nano Banana, Midjourney, Flux, Seedream, Ideogram, Krea, Grok e Anima local.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. References to art -->
+  <section>
+    <div class="kicker">Referências viram cena</div>
+    <h2>4 imagens do jogo, uma tela inicial</h2>
+    <div class="row" style="margin-top:30px">
+      <div class="grid refs">
+        <img src="img/ref-big.webp" alt="Robô grande">
+        <img src="img/ref-small.webp" alt="Robô pequeno">
+        <img src="img/ref-drone.webp" alt="Drone">
+        <img src="img/ref-place.webp" alt="Tela do jogo">
+      </div>
+      <div class="arrow">→</div>
+      <div>
+        <img class="shadow" src="img/inp-0.webp" style="width:1000px" alt="Arte oficial gerada pelo Seedream">
+        <p class="cap">"wallpaper de tela inicial, a base e os personagens principais" · Seedream 5 Pro, mantendo os três robôs fiéis às referências</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Same brief, many models -->
+  <section>
+    <div class="kicker">Mesmo pedido, modelos diferentes</div>
+    <h2>"Os dois droids brincando dentro do domo"</h2>
+    <div class="grid models">
+      <figure><img src="img/m-mj.webp" alt=""><span class="tag">Midjourney V8.2</span></figure>
+      <figure><img src="img/m-gpt.webp" alt=""><span class="tag">GPT Image 2.5</span></figure>
+      <figure><img src="img/m-seedream.webp" alt=""><span class="tag">Seedream 5 Pro</span></figure>
+      <figure><img src="img/m-krea.webp" alt=""><span class="tag">Krea 3</span></figure>
+      <figure><img src="img/m-mj2.webp" alt=""><span class="tag">Midjourney V8.2</span></figure>
+      <figure><img src="img/m-flux3.webp" alt=""><span class="tag">Flux 3</span></figure>
+      <figure><img src="img/m-seedream2.webp" alt=""><span class="tag">Seedream 5 Pro</span></figure>
+      <figure><img src="img/m-flux2.webp" alt=""><span class="tag">Flux 2 Pro</span></figure>
+    </div>
+  </section>
+
+  <!-- 5. Logos and icons -->
+  <section>
+    <div class="kicker">Logo e ícone do jogo</div>
+    <h2>Da marca ao ícone da loja</h2>
+    <div class="grid icons">
+      <img src="img/logo-1.webp" alt=""><img src="img/logo-2.webp" alt=""><img src="img/logo-4.webp" alt=""><img src="img/icon-1.webp" alt=""><img src="img/icon-2.webp" alt="">
+      <img src="img/icon-3.webp" alt=""><img src="img/icon-4.webp" alt=""><img src="img/icon-5.webp" alt=""><img src="img/icon-6.webp" alt=""><img src="img/logo-3.webp" alt="">
+    </div>
+  </section>
+
+  <!-- 6. Inpaint -->
+  <section>
+    <div class="kicker">Inpaint</div>
+    <h2>Pinta a área, troca só ela</h2>
+    <div class="row" style="margin-top:24px">
+      <div>
+        <div class="xfade shadow">
+          <img src="img/inp-0.webp" alt="Original"><img src="img/inp-1.webp" alt="Versão 1"><img src="img/inp-2.webp" alt="Versão 2">
+          <div class="lbl"><span>Original</span><span>v1 · inimigos trocados</span><span>v2 · criatura refeita</span></div>
+        </div>
+      </div>
+      <div style="width:400px">
+        <img src="img/inp-ref.webp" style="width:400px;background:#fff" alt="Criaturas de referência">
+        <p class="cap">Referência: as criaturas do jogo</p>
+        <p class="quote">"trocar os inimigos genéricos da imagem original pelos inimigos da imagem de referência"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Inpaint in the app (video) -->
+  <section>
+    <div class="kicker">Versões lado a lado</div>
+    <h2>Versões com o modelo usado; a estrela marca a oficial</h2>
+    <video class="shadow" data-autoplay muted loop playsinline style="width:1260px;margin-top:16px"><source src="img/inpaint-versions.webm" type="video/webm"><source src="img/inpaint-versions.mp4" type="video/mp4"></video>
+  </section>
+
+  <!-- 8. Free edit + upscale -->
+  <section>
+    <div class="kicker">Edição livre e upscale</div>
+    <h2>Rascunho de cor → fundo do jogo → 5472 px</h2>
+    <div class="row" style="margin-top:26px">
+      <div class="grid" style="grid-template-columns:1fr;width:470px">
+        <img src="img/bg-base.webp" style="width:470px" alt="Rascunho de cor">
+        <p class="cap" style="margin-top:-8px">Base: rascunho de cor</p>
+        <img src="img/bg-flux.webp" style="width:470px" alt="Fundo pintado pelo Flux 3">
+        <p class="cap" style="margin-top:-8px">Flux 3: fundo detalhado na mesma estrutura</p>
+      </div>
+      <div class="row zoom">
+        <div><img src="img/zoom-before.webp" alt="Antes do upscale"><p class="cap">Antes · 2736 px</p></div>
+        <div><img src="img/zoom-after.webp" alt="Depois do upscale"><p class="cap"><span class="accent">Depois · 5472 px</span> (SeedVR, mesmo recorte)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Style library -->
+  <section>
+    <div class="kicker">Biblioteca de estilos</div>
+    <h2>1036 estilos, cada um com prévia real</h2>
+    <img class="shadow" src="img/app-styles.webp" style="width:1260px;margin-top:16px" alt="Seleção de estilo">
+  </section>
+
+  <!-- 10. Numbers -->
+  <section>
+    <div class="kicker">Resultado</div>
+    <h2>MechaBOT: 77 artes prontas em dois dias</h2>
+    <div class="grid stats">
+      <div class="stat"><b>14</b><span>modelos de imagem</span></div>
+      <div class="stat"><b>85</b><span>modos prontos (logo, ícone, pôster, capa…)</span></div>
+      <div class="stat"><b>1036</b><span>estilos com prévia</span></div>
+      <div class="stat"><b>5</b><span>upscalers</span></div>
+      <div class="stat"><b>16</b><span>inpaints só neste projeto</span></div>
+    </div>
+    <div class="strip">
+      <img src="img/icon-4.webp" alt=""><img src="img/m-mj.webp" alt=""><img src="img/logo-1.webp" alt=""><img src="img/inp-2.webp" alt=""><img src="img/icon-5.webp" alt=""><img src="img/m-seedream.webp" alt="">
+    </div>
+  </section>
+
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({ width: 1600, height: 900, margin: 0.04, hash: true, controls: true, progress: true, center: false, transition: 'fade', backgroundTransition: 'fade' });
+</script>
+<script src="../../shell/bridge.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<meta charset="utf-8">
+<title>forja</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="vendor/reveal.css">
+<style>
+/* Layout: a forge at night — charcoal ground, ember accent, every slide one big picture plus a few words */
+:root {
+  --coal: #15130f;        /* page ground */
+  --soot: #211e19;        /* tile behind GIFs */
+  --ash: #8f8679;         /* muted text, captions */
+  --bone: #f3ece0;        /* main text */
+  --ember: #ff7a2f;       /* accent: the hot metal */
+  --steel: #7fd3ff;       /* second accent, used once per slide at most */
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { height: 100%; background: var(--coal); color: var(--bone); }
+body { padding-left: max(0px, env(safe-area-inset-left, 0px)); padding-right: max(0px, env(safe-area-inset-right, 0px)); }
+.reveal { font-family: var(--body); font-size: 26px; color: var(--bone); background: var(--coal); }
+.reveal .slides { text-align: left; }
+.reveal .slides > section { height: 100%; padding: 0 !important; }
+.reveal h1, .reveal h2 { font-family: var(--display); font-weight: 800; line-height: .95; letter-spacing: -.02em; margin: 0; text-wrap: balance; color: var(--bone); }
+.reveal h1 { font-size: 168px; }
+.reveal h2 { font-size: 64px; }
+.reveal p { margin: 0; line-height: 1.35; }
+.eyebrow { font-family: var(--mono); font-size: 17px; letter-spacing: .14em; text-transform: uppercase; color: var(--ember); }
+.lede { font-size: 30px; color: var(--bone); max-width: 30ch; }
+.note { font-size: 20px; color: var(--ash); }
+.hot { color: var(--ember); }
+.cool { color: var(--steel); }
+
+/* slide frame */
+.s { display: grid; height: 720px; box-sizing: border-box; padding: 48px 56px; gap: 28px; }
+.head { display: grid; gap: 10px; align-content: start; }
+
+/* media tiles */
+.tile { margin: 0; background: var(--soot); border-radius: 6px; overflow: hidden; display: grid; place-items: center; min-height: 0; min-width: 0; position: relative; }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile.fit img { object-fit: contain; }
+.tile figcaption { position: absolute; left: 10px; bottom: 8px; font-family: var(--mono); font-size: 14px; color: var(--bone); background: rgba(21,19,15,.78); padding: 3px 8px; border-radius: 3px; }
+
+/* 1 · title */
+.title { grid-template-columns: 1.05fr 1fr; align-items: center; }
+.title .tile { height: 600px; }
+.title .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.tag { font-family: var(--mono); font-size: 16px; border: 1px solid #3a352d; color: var(--ash); padding: 5px 10px; border-radius: 3px; }
+
+/* 2 · how */
+.how { grid-template-columns: 470px 1fr; }
+.steps { display: grid; gap: 18px; align-content: start; margin-top: 8px; }
+.step { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: baseline; }
+.step b { font-family: var(--mono); font-weight: 500; color: var(--ember); font-size: 20px; }
+.step p { font-size: 22px; }
+pre.spec { margin: 6px 0 0; font-family: var(--mono); font-size: 14.5px; line-height: 1.45; color: #d8cfc1; background: var(--soot); border-left: 3px solid var(--ember); padding: 14px 16px; border-radius: 0 6px 6px 0; white-space: pre; overflow: hidden; box-shadow: none; width: auto; }
+pre.spec .k { color: var(--steel); }
+pre.spec .v { color: var(--ember); }
+.how .tile { height: 624px; }
+
+/* grids */
+.g4 { grid-template-rows: auto 1fr; }
+.g4 .grid { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr; gap: 14px; min-height: 0; }
+.g4 .grid .tile { height: 100%; }
+.g8 { grid-template-rows: auto 1fr; }
+.g8 .grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; gap: 12px; min-height: 0; }
+
+/* 4 · skeleton */
+.skel { grid-template-columns: 1fr 1fr 360px; align-items: stretch; }
+.skel .tile { height: 624px; }
+.skel .side { display: grid; align-content: end; gap: 16px; padding-bottom: 12px; }
+.skel h2 { font-size: 80px; }
+
+/* 5 · scene */
+.scene { grid-template-columns: 1.5fr 1fr; grid-template-rows: auto 1fr; }
+.scene .head { grid-column: 1 / -1; }
+.scene .tile { height: 100%; }
+
+/* 7 · game */
+.game { grid-template-rows: auto 1fr; }
+.game .row { display: grid; grid-template-columns: 1fr 300px; gap: 24px; min-height: 0; }
+.game .shot { border-radius: 6px; overflow: hidden; min-height: 0; }
+.game .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.facts { display: grid; gap: 18px; align-content: start; }
+.fact b { display: block; font-family: var(--display); font-weight: 800; font-size: 54px; line-height: 1; color: var(--ember); font-variant-numeric: tabular-nums; }
+.fact span { font-size: 18px; color: var(--ash); }
+
+/* 8 · cast */
+.cast { grid-template-columns: 1.6fr 1fr; grid-template-rows: auto 1fr; }
+.cast .head { grid-column: 1 / -1; }
+.cast .tile { height: 100%; }
+.cast .tile.black { background: #000; }
+.cast .stack { display: grid; grid-template-rows: 1fr 1fr; gap: 14px; min-height: 0; }
+
+/* 9 · godot */
+.godot { grid-template-columns: 1fr 420px; grid-template-rows: 1fr; }
+.godot .grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 12px; min-height: 0; }
+.godot ul { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 12px; }
+.godot li { font-size: 21px; display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: baseline; }
+.godot li code { font-family: var(--mono); font-size: 16px; color: var(--steel); }
+
+/* 10 · numbers */
+.end { grid-template-columns: 1fr 1fr; align-items: center; }
+.nums { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 34px; }
+.nums b { display: block; font-family: var(--display); font-weight: 800; font-size: 76px; line-height: 1; color: var(--bone); font-variant-numeric: tabular-nums; }
+.nums b em { font-style: normal; color: var(--ember); }
+.nums span { font-size: 19px; color: var(--ash); }
+.end .tile { height: 620px; }
+
+.reveal .controls { color: var(--ember); }
+.reveal .progress { color: var(--ember); height: 4px; }
+.reveal .slide-number { background: transparent; font-family: var(--mono); color: var(--ash); font-size: 14px; }
+@media (prefers-reduced-motion: reduce) { .reveal .slides section { transition: none !important; } }
+</style>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- 1 -->
+<section>
+  <div class="s title">
+    <div>
+      <p class="eyebrow">harness de modelagem 3D do Claude</p>
+      <h1>for<span class="hot">ja</span></h1>
+      <p class="lede" style="margin-top:22px">Modelos 3D de jogo, com rig e animação, escritos em JSON pelo próprio agente.</p>
+      <div class="tags"><span class="tag">GLB pronto para engine</span><span class="tag">Godot</span><span class="tag">esqueleto Mixamo</span><span class="tag">sem API, sem custo por modelo</span></div>
+    </div>
+    <figure class="tile"><img src="media/mech_fire.gif" alt="Mech disparando as metralhadoras"></figure>
+  </div>
+</section>
+
+<!-- 2 -->
+<section>
+  <div class="s how">
+    <div class="head">
+      <p class="eyebrow">como funciona</p>
+      <h2>Escreve, compila, olha.</h2>
+      <div class="steps">
+        <div class="step"><b>1</b><p>O agente escreve um spec <code style="font-family:var(--mono);color:var(--steel)">.kr.json</code>: peças, pivôs, pintura e animações.</p></div>
+        <div class="step"><b>2</b><p><span class="hot">forja build</span> gera o GLB e uma folha de revisão em segundos.</p></div>
+        <div class="step"><b>3</b><p>Ele lê a folha, as medidas e os avisos de QA, corrige e compila de novo.</p></div>
+      </div>
+<pre class="spec">{ <span class="k">"name"</span>: <span class="v">"hand.R"</span>, <span class="k">"parent"</span>: <span class="v">"forearm.R"</span>,
+  <span class="k">"shape"</span>: { <span class="k">"type"</span>: <span class="v">"hand"</span>, <span class="k">"curl"</span>: <span class="v">1</span> } }
+<span class="k">"attack"</span>: { <span class="k">"bone"</span>: <span class="v">"hand.R"</span>, <span class="k">"lead"</span>: {
+  <span class="k">"tip"</span>: <span class="v">"knife.tip"</span>, <span class="k">"keys"</span>: [ ... ] } }</pre>
+    </div>
+    <figure class="tile fit"><img src="media/goblin_review.png" alt="Folha de revisão do goblin: 8 vistas e close-ups da cabeça e das mãos"><figcaption>review.png do goblin · 8 vistas + close-ups</figcaption></figure>
+  </div>
+</section>
+
+<!-- 3 -->
+<section>
+  <div class="s g4">
+    <div class="head">
+      <p class="eyebrow">personagens</p>
+      <h2>Eles lutam, conjuram e andam de skate.</h2>
+    </div>
+    <div class="grid">
+      <figure class="tile"><img src="media/goblin_combo.gif" alt="Goblin fazendo um combo de três golpes com faca"><figcaption>goblin · combo de 3 golpes</figcaption></figure>
+      <figure class="tile"><img src="media/orc_attack.gif" alt="Orc atacando com machado"><figcaption>orc · machado</figcaption></figure>
+      <figure class="tile"><img src="media/wizard_necro.gif" alt="Mago invocando um esqueleto"><figcaption>mago · necromancia</figcaption></figure>
+      <figure class="tile"><img src="media/bubblegum_kickflip.gif" alt="Princesa Jujuba dando um kickflip"><figcaption>jujuba · kickflip</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section>
+  <div class="s skel">
+    <figure class="tile"><img src="media/skeleton_ride.gif" alt="Esqueleto de boné remando no skate"><figcaption>ride</figcaption></figure>
+    <figure class="tile"><img src="media/skeleton_ollie.gif" alt="Esqueleto de boné dando um ollie"><figcaption>ollie</figcaption></figure>
+    <div class="side">
+      <p class="eyebrow">favorito da casa</p>
+      <h2>Esqueleto de skate.</h2>
+      <p class="note">Rig nos nomes de osso padrão de humanoide, então qualquer animação Mixamo também serve nele. Boné vermelho incluso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section>
+  <div class="s scene">
+    <div class="head">
+      <p class="eyebrow">cenários</p>
+      <h2>Do personagem à pista inteira.</h2>
+    </div>
+    <figure class="tile fit"><img src="media/skate_park.gif" alt="Pista de skate inteira girando"><figcaption>skate park · 777 peças</figcaption></figure>
+    <figure class="tile"><img src="media/bubblegum_shoot.gif" alt="Jujuba atirando com arco em cima do skate"><figcaption>remando e atirando com arco</figcaption></figure>
+  </div>
+</section>
+
+<!-- 6 -->
+<section>
+  <div class="s g8">
+    <div class="head">
+      <p class="eyebrow">bichos, máquinas e props</p>
+      <h2>Qualquer coisa que dê para descrever.</h2>
+    </div>
+    <div class="grid">
+      <figure class="tile"><img src="media/rooster.gif" alt="Galo virando super saiyajin"><figcaption>galo ssj</figcaption></figure>
+      <figure class="tile"><img src="media/robin.gif" alt="Pisco levantando voo"><figcaption>pisco</figcaption></figure>
+      <figure class="tile"><img src="media/falcon.gif" alt="Millennium Falcon voando"><figcaption>falcon</figcaption></figure>
+      <figure class="tile"><img src="media/car.gif" alt="Carro se montando peça por peça"><figcaption>carro se montando</figcaption></figure>
+      <figure class="tile"><img src="media/gauntlet.gif" alt="Manopla estalando os dedos"><figcaption>manopla · estalo</figcaption></figure>
+      <figure class="tile"><img src="media/crystal.gif" alt="Cristal com neve caindo"><figcaption>cristal · clima</figcaption></figure>
+      <figure class="tile"><img src="media/chibi.gif" alt="Cabeça chibi falando"><figcaption>rosto · fala</figcaption></figure>
+      <figure class="tile"><img src="media/pistol.gif" alt="Pistola disparando uma rajada"><figcaption>pistola · rajada</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section>
+  <div class="s game">
+    <div class="head">
+      <p class="eyebrow">usado num jogo de verdade</p>
+      <h2>Mecha Domme, rodando na Godot.</h2>
+    </div>
+    <div class="row">
+      <div class="shot"><img src="media/game_dome.png" alt="Captura do jogo: o domo com as armas em volta e o HUD"></div>
+      <div class="facts">
+        <div class="fact"><b>12</b><span>inimigos, cada um com andar e ataque</span></div>
+        <div class="fact"><b>107</b><span>GIFs de revisão gerados no projeto</span></div>
+        <div class="fact"><b>299</b><span>peças no domo montado</span></div>
+        <p class="note">Mecha, domo, armas, drones, minérios e inimigos saíram do forja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section>
+  <div class="s cast">
+    <div class="head">
+      <p class="eyebrow">o elenco</p>
+      <h2>Um estilo só, do herói ao chefe.</h2>
+    </div>
+    <figure class="tile black fit"><img src="media/enemies.png" alt="Grupo de inimigos: olho voador, minotauro, hidra, aranha, cérbero, wyvern e mago encapuzado"></figure>
+    <div class="stack">
+      <figure class="tile fit"><img src="media/mecha_render.png" alt="Mecha em pose 3/4"><figcaption>mecha · 225 peças · 6.824 tris</figcaption></figure>
+      <figure class="tile fit"><img src="media/enemy_hydra_attack.gif" alt="Hidra atacando"><figcaption>hidra · ataque</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section>
+  <div class="s godot">
+    <div class="grid">
+      <figure class="tile"><img src="media/mecha_grapple.gif" alt="Mecha lançando o gancho"><figcaption>gancho</figcaption></figure>
+      <figure class="tile"><img src="media/mecha_shield.gif" alt="Mecha ligando o escudo"><figcaption>escudo</figcaption></figure>
+      <figure class="tile"><img src="media/mecha_jet_boost.gif" alt="Mecha usando o jetpack"><figcaption>jetpack</figcaption></figure>
+      <figure class="tile"><img src="media/dome_tesla_coil_preview_zap.gif" alt="Bobina tesla disparando um raio"><figcaption>bobina tesla</figcaption></figure>
+      <figure class="tile"><img src="media/mini_bot_preview_mine_sweep.gif" alt="Mini robô minerando com laser"><figcaption>mini bot</figcaption></figure>
+      <figure class="tile"><img src="media/dome_assembly_showcase.gif" alt="Domo montado girando"><figcaption>domo</figcaption></figure>
+    </div>
+    <div class="head">
+      <p class="eyebrow">pronto para a engine</p>
+      <h2>O jogo decide, o asset obedece.</h2>
+      <ul>
+        <li><code>loop</code><span>clips de loop já chegam em loop</span></li>
+        <li><code>events</code><span>tiro e impacto viram sinais na Godot</span></li>
+        <li><code>socket</code><span>pontos de onde sai o tiro e o gancho</span></li>
+        <li><code>stretch</code><span>cabo e laser esticam até o alvo</span></li>
+        <li><code>forja_rope</code><span>corda elástica para o gancho</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section>
+  <div class="s end">
+    <div class="head">
+      <p class="eyebrow">em números</p>
+      <h2 style="margin-bottom:30px">Feito para o agente acertar sozinho.</h2>
+      <div class="nums">
+        <div><b>150</b><span>specs testados a cada mudança</span></div>
+        <div><b>&lt;1<em>s</em></b><span>para compilar um prop</span></div>
+        <div><b>8</b><span>vistas a cada build, mais close-ups de rosto e mãos</span></div>
+        <div><b><em>0</em></b><span>chamadas de API para modelar</span></div>
+      </div>
+    </div>
+    <figure class="tile fit"><img src="media/mecha_render.png" alt="Mecha em pose 3/4"></figure>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="vendor/reveal.js"></script>
+<script>
+Reveal.initialize({
+  width: 1280, height: 720, margin: 0.03,
+  hash: false, controls: true, progress: true, slideNumber: 'c/t',
+  center: false, transition: 'fade', backgroundTransition: 'none'
+});
+</script>
+<script src="../../shell/bridge.js"></script>
