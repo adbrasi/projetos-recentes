@@ -20,6 +20,7 @@ DECKS = {
     "effekseer-fx": DEV / "3d_vibes/effekseer_fx/presentation/index.html",
     "spritecam": DEV / "3d_vibes/spritecam/presentation/index.html",
     "shiki": DEV / "shiki_summon/presentation/index.html",
+    "shortboard": DEV / "shortboard_creator/presentation/shortboard-creator.html",
 }
 SKIP = shutil.ignore_patterns("*.py", "*.src.html", "src.html", "deck.html", "__pycache__")
 BRIDGE = '<script src="../../shell/bridge.js"></script>\n'
@@ -92,6 +93,10 @@ def copy_deck(slug, entry):
         return m.group(1) + rel.as_posix() + m.group(3)
 
     html = REF.sub(pull, html)
+    cover = re.search(r'data-background-image="data:image/(\w+);base64,([^"]+)"', html)
+    if cover:  # decks with inlined images: the master's opener card needs the cover as a file
+        import base64
+        (out / f"cover.{cover.group(1)}").write_bytes(base64.b64decode(cover.group(2)))
     if entry.name != "index.html":
         (out / entry.name).unlink(missing_ok=True)
     (out / "index.html").write_text(inject(html), "utf-8")

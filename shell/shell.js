@@ -4,12 +4,10 @@
 const ACTS = [
   { id: "I", title: "Arte 2D a partir de referências", lede: "Um pedido ou um screenshot vira arte pronta para o jogo." },
   { id: "II", title: "Do 3D ao sprite", lede: "Modelos, props, animações, efeitos e a câmera que transforma tudo em sprite." },
-  { id: "III", title: "Um agente que usa o PC", lede: "O mesmo jeito de trabalhar, aplicado ao computador inteiro." },
+  { id: "III", title: "Agentes de ponta a ponta", lede: "Do pedido ao resultado: um agente que usa o PC, um roteiro que vira filme e o caso MechaBOT." },
 ];
 
 const CHAPTERS = [
-  { slug: "fabula", act: "I", name: "Fabula", accent: "#45d4ff", img: "img/hero.webp",
-    line: "Você descreve em português. Ele escreve o prompt certo para cada modelo e entrega a arte do jogo." },
   { slug: "garaki", act: "I", name: "GARAKI", accent: "#ff7a45", img: "img/moba_rebuilt.jpg",
     line: "Um screenshot de jogo 2D vira os assets do jogo, prontos para o Phaser, no visual do original." },
   { slug: "pintoresco", act: "I", name: "Pintoresco", accent: "#f5b83a", img: "img/lava-map.jpg",
@@ -31,6 +29,10 @@ const CHAPTERS = [
     line: "Modelo 3D entra. Sprite de jogo sai." },
   { slug: "shiki", act: "III", name: "SHIKI", accent: "#ff5d73", img: "media/app.jpg",
     line: "Você pede. Ele usa o seu PC: lê a tela, mexe o mouse e o teclado e para antes de pagar." },
+  { slug: "shortboard", act: "III", name: "Shortboard Creator", accent: "#f2e04b", img: "cover.jpeg",
+    line: "Do roteiro ao filme de anime, automático, com os mesmos personagens do primeiro ao último quadro." },
+  { slug: "fabula", act: "III", name: "Fabula", accent: "#45d4ff", img: "img/hero.webp",
+    line: "Você descreve em português. Ele escreve o prompt certo para cada modelo e entrega a arte do jogo." },
 ];
 CHAPTERS.forEach((c, i) => { c.i = i; c.no = String(i + 1).padStart(2, "0"); c.src = `decks/${c.slug}/`; });
 const thumb = (c) => c.src + c.img;
@@ -64,7 +66,7 @@ function coverCard() {
     <div class="copy">
       <p class="kicker a1">Apresentação · novembro de 2026</p>
       <h1 class="a2">Projetos <em>recentes</em></h1>
-      <p class="lede a3">Onze ferramentas construídas com agentes: arte 2D a partir de referências, um pipeline do 3D ao sprite e um agente que usa o PC.</p>
+      <p class="lede a3">Doze projetos construídos com agentes: arte 2D a partir de referências, um pipeline do 3D ao sprite e agentes que entregam de ponta a ponta.</p>
       <p class="hint a4"><kbd>→</kbd> avançar <kbd>←</kbd> voltar <kbd>G</kbd> agenda <kbd>F</kbd> tela cheia</p>
     </div>
   </section>`);
@@ -114,7 +116,7 @@ function endCard() {
     <div class="copy">
       <p class="kicker a1">Fim</p>
       <h2 class="a2">Obrigado.</h2>
-      <p class="lede a3">Onze projetos, uma ideia: o agente faz o trabalho pesado e você decide o que fica.</p>
+      <p class="lede a3">Doze projetos, uma ideia: o agente faz o trabalho pesado e você decide o que fica.</p>
     </div>
     <div class="grid a4">${CHAPTERS.map((c) => `<button data-go="${c.i}" style="--accent:${c.accent}">
       <img src="${thumb(c)}" alt="" class="${c.pixel ? "pixel" : ""}"><span>${c.no} ${c.name}</span></button>`).join("")}</div>
