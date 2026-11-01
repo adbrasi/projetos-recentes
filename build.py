@@ -22,6 +22,9 @@ DECKS = {
     "shiki": DEV / "shiki_summon/presentation/index.html",
     "shortboard": DEV / "shortboard_creator/presentation/shortboard-creator.html",
 }
+# Slides moved out of a deck into extra.html in the same folder, shown after the master's end card.
+EXTRAS = {"forja": ["Mecha Domme, rodando na Godot.", "O jogo decide, o asset obedece."]}
+SECTION = re.compile(r"(?:<!-- \d+ -->\s*)?<section\b.*?</section>\s*", re.S)
 SKIP = shutil.ignore_patterns("*.py", "*.src.html", "src.html", "deck.html", "__pycache__")
 BRIDGE = '<script src="../../shell/bridge.js"></script>\n'
 REF = re.compile(r'((?:src|href|poster|data-src|data-background-image|data-background-video)=")(\.\./[^"#?]+)(")')
@@ -99,6 +102,14 @@ def copy_deck(slug, entry):
         (out / f"cover.{cover.group(1)}").write_bytes(base64.b64decode(cover.group(2)))
     if entry.name != "index.html":
         (out / entry.name).unlink(missing_ok=True)
+    if slug in EXTRAS:
+        moved = [m for m in SECTION.finditer(html) if any(t in m.group(0) for t in EXTRAS[slug])]
+        assert len(moved) == len(EXTRAS[slug]), f"{slug}: expected {len(EXTRAS[slug])} extra slides, found {len(moved)}"
+        first, last = SECTION.search(html), list(SECTION.finditer(html))[-1]
+        extra = html[:first.start()] + "".join(m.group(0) for m in moved) + html[last.end():]
+        (out / "extra.html").write_text(inject(extra), "utf-8")
+        for m in reversed(moved):
+            html = html[:m.start()] + html[m.end():]
     (out / "index.html").write_text(inject(html), "utf-8")
 
 

@@ -33,9 +33,12 @@ const CHAPTERS = [
     line: "Do roteiro ao filme de anime, automático, com os mesmos personagens do primeiro ao último quadro." },
   { slug: "fabula", act: "III", name: "Fabula", accent: "#45d4ff", img: "img/hero.webp",
     line: "Você descreve em português. Ele escreve o prompt certo para cada modelo e entrega a arte do jogo." },
+  { slug: "forja", page: "extra.html", act: "extra", name: "forja no jogo", accent: "#ff5a3c", img: "media/game_dome.png",
+    line: "Mecha Domme rodando na Godot, com os assets do forja prontos para a engine." },
 ];
-CHAPTERS.forEach((c, i) => { c.i = i; c.no = String(i + 1).padStart(2, "0"); c.src = `decks/${c.slug}/`; });
-const thumb = (c) => c.src + c.img;
+CHAPTERS.forEach((c, i) => { c.i = i; c.no = String(i + 1).padStart(2, "0"); c.dir = `decks/${c.slug}/`; c.src = c.dir + (c.page || ""); });
+const thumb = (c) => c.dir + c.img;
+const MAIN = CHAPTERS.filter((c) => c.act !== "extra");
 
 // The whole talk as a flat list of steps.
 const STEPS = [{ kind: "cover" }, { kind: "agenda" }];
@@ -46,6 +49,7 @@ for (const act of ACTS) {
   }
 }
 STEPS.push({ kind: "end" });
+for (const c of CHAPTERS.filter((c) => c.act === "extra")) STEPS.push({ kind: "chapter", c }, { kind: "deck", c });
 
 const $ = (sel, el = document) => el.querySelector(sel);
 const stage = $("#stage"), framesEl = $("#frames"), wipe = $("#wipe"), hud = $("#hud");
@@ -54,7 +58,7 @@ const h = (html) => { const t = document.createElement("template"); t.innerHTML 
 // ---------- cards ----------
 
 function coverCard() {
-  const imgs = CHAPTERS.map(thumb);
+  const imgs = MAIN.map(thumb);
   const row = (k) => {
     const list = imgs.slice(k * 4).concat(imgs.slice(0, k * 4));
     const cells = list.concat(list).map((src) => `<figure><img src="${src}" alt=""></figure>`).join("");
@@ -104,7 +108,7 @@ function chapterCard(c) {
       <img src="${thumb(c)}" alt="" class="${c.pixel ? "pixel" : ""}">
     </figure>
     <div class="copy">
-      <p class="kicker a1"><span class="no">${c.no}</span> Ato ${act.id} · ${act.title}</p>
+      <p class="kicker a1">${act ? `<span class="no">${c.no}</span> Ato ${act.id} · ${act.title}` : `<span class="no">+</span> Extra`}</p>
       <h2 class="a2">${c.name}</h2>
       <p class="lede a3">${c.line}</p>
     </div>
@@ -118,7 +122,7 @@ function endCard() {
       <h2 class="a2">Obrigado.</h2>
       <p class="lede a3">Doze projetos, uma ideia: o agente faz o trabalho pesado e você decide o que fica.</p>
     </div>
-    <div class="grid a4">${CHAPTERS.map((c) => `<button data-go="${c.i}" style="--accent:${c.accent}">
+    <div class="grid a4">${MAIN.map((c) => `<button data-go="${c.i}" style="--accent:${c.accent}">
       <img src="${thumb(c)}" alt="" class="${c.pixel ? "pixel" : ""}"><span>${c.no} ${c.name}</span></button>`).join("")}</div>
   </section>`);
 }
@@ -270,7 +274,7 @@ function onKey(e) {
   if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(k)) e.shift ? prev() : next();
   else if (["ArrowLeft", "ArrowUp", "PageUp"].includes(k)) prev();
   else if (k === "Home") go(0, { jump: true });
-  else if (k === "End") go(STEPS.length - 1, { jump: true });
+  else if (k === "End") go(STEPS.findIndex((s) => s.kind === "end"), { jump: true });
   else if (["g", "G", "Escape", "o", "O"].includes(k)) go(1, { jump: true });
   else if (k === "f" || k === "F") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
   pokeHud();
